@@ -1,5 +1,6 @@
 package com.example.dschaphorst_weather.view
 
+import android.view.KeyEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -74,7 +76,7 @@ fun SearchScreen(
                     if (citySearch.value.text.isNotEmpty()) {
                         weatherViewModel.selectedCity = citySearch.value.text
                         weatherViewModel.getWeather()
-                        navController?.navigate("weather")
+                        navController.navigate("weather")
                     } else {
 
                     }
@@ -89,7 +91,17 @@ fun SearchScreen(
             placeholder = { Text(text = "Enter City Name") },
             modifier = Modifier
                 .padding(all = 16.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .onKeyEvent {
+                    if (it.nativeKeyEvent.keyCode == KeyEvent.KEYCODE_ENTER) {
+                        weatherViewModel.selectedCity = citySearch.value.text
+                        weatherViewModel.getWeather()
+                        navController.navigate("weather")
+                        true
+                    } else {
+                        false
+                    }
+                },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = true,
@@ -104,6 +116,15 @@ fun SearchScreen(
         )
         Button(
             onClick = {
+                weatherViewModel.selectedCity = citySearch.value.text
+                weatherViewModel.getWeather()
+                navController.navigate("weather")
+            }
+        ) {
+            Text(text = "Search")
+        }
+        Button(
+            onClick = {
                 shouldGetLocation.value = true
             }
         ) {
@@ -113,7 +134,7 @@ fun SearchScreen(
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
             Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))
-            Text(text = "WeatherByLocation")
+            Text(text = "Weather by location")
         }
     }
 

@@ -61,6 +61,7 @@ class WeatherViewModel @Inject constructor(
         viewModelScope.launch {
             selectedCity = weatherRepository.getCityName(location.latitude, location.longitude)
             _isCitySelected.value = true
+            getWeather()
         }
     }
 

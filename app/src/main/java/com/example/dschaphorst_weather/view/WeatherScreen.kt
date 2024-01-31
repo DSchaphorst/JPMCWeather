@@ -57,6 +57,7 @@ fun DetailItem(weather: WeatherResponse) {
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "City: ${weather.name}")
         Text(text = "Temperature: ${weather.main?.temp.toString()}")
         Text(text = "Max Temperature: ${weather.main?.tempMax.toString()}")
         Text(text = "Min Temperature: ${weather.main?.tempMin.toString()}")
