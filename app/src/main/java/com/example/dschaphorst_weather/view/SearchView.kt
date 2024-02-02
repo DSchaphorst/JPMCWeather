@@ -1,6 +1,8 @@
 package com.example.dschaphorst_weather.view
 
 import android.view.KeyEvent
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -123,8 +125,17 @@ fun SearchScreen(
         ) {
             Text(text = "Search")
         }
+        val launcher = rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions(),
+        ) {
+            val areGranted = it.values.reduce { acc, next -> acc && next }
+            if (areGranted) {
+                weatherViewModel.getLocation()
+            }
+        }
         Button(
             onClick = {
+                launcher.launch(permissions)
                 shouldGetLocation.value = true
             }
         ) {
