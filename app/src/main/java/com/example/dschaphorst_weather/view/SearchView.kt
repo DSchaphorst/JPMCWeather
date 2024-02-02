@@ -151,6 +151,7 @@ fun SearchScreen(
 
     if (shouldGetLocation.value) {
         AskPermissions(weatherViewModel)
+        navController.navigate("weather")
         shouldGetLocation.value = false
     }
 }
